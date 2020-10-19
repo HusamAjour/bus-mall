@@ -14,6 +14,7 @@ function setMiddleImgSrc(imgIndex){
   Product.all[imgIndex].increaseViews();
 }
 function setRightImgSrc(imgIndex){
+
   var imgRight = document.getElementById('rightImage');
   imgRight.setAttribute('src', Product.all[imgIndex].imgURL);
   imgRight.setAttribute('alt', Product.all[imgIndex].name);
@@ -117,9 +118,10 @@ imagesSection.addEventListener('click', pickRandomImages);
 function pickRandomImages(event) {
   var clickId = event.target.id;
   if(clickId === 'middleImage' || clickId === 'leftImage' || clickId === 'rightImage'){
+    clicksTotal++;
     if(clicksTotal < sessionLength){
+      console.log(clicksTotal);
       findClickedImage(event.target.alt);
-      clicksTotal++;
       var randomIntegers = generateThreeUniqueIntegers(prevValues[0],prevValues[1],prevValues[2]);
       prevValues = randomIntegers;
       setLeftImgSrc(randomIntegers[0]);
@@ -127,6 +129,8 @@ function pickRandomImages(event) {
       setRightImgSrc(randomIntegers[2]);
     }
     if(clicksTotal === sessionLength){
+      imagesSection.classList.add('hidden');
+      imagesSection.removeEventListener('click', pickRandomImages);
       showResult();
       getAllProductsNames();
       getAllProductsViews();
